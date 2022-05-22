@@ -1,0 +1,57 @@
+---
+layout: post
+title: [drip] an investment
+---
+
+
+02.01.2022 / DBANKS / CRYPTO
+Over the last couple of years I’ve been learning more about crypto currencies and projects that spark my interest. I stumbled across multiple articles about the DRIP NETWORK project thanks to medium.com and it lured me in with its low risk high reward model. While I’ve seen success with just buying and holding currencies like XRP, ETH, LRC, WLUNA, and HNT this one in particular has proved to be one of my long term investments in the crypto space.
+
+My journey with DRIP started in November 2021 with an initial investment of a thousand bucks to get my feet wet with this project. At that time DRIP’s price was around 20 dollars and at the time of writing this it is now 90 dollars so if you are a buy and holder then it would’ve been a perfect opportunity there for you.
+
+Below is my current DRIP faucet, if I would stop hydrating my account today I would be able to claim %1 of my deposits which would be around 80+ dollars before the 10% tax until I reach my max payout. 
+
+
+
+There are also earning tools like https://dripfi.app/ that will calculate your DRIP earnings to give you an ideal of how much you will earn using DRIP. If any of this is interesting to you keep reading to see how to get started.
+
+
+
+What is DRIP?
+
+The DRIP Network’s Faucet is a low-risk, high reward contract that operates similarly to a high yield certificate of deposit by paying out 1% daily return on investment up to 365%.
+Players can compound and extend their earnings through deposits, hydrating (compounding) rewards as well as through team based referrals. 
+
+
+How to get started?
+
+Step 1: Create an account on Binance.US or Crypto.com 
+Decide how much you would like to invest in your account. Understand that these will be funds you can never withdraw, so view it as a long term investment with daily interest. Once you have accumulated enough in your available balance to cover the 10% withdrawal fee you can start withdrawing your funds (interest) as often as you like. You can withdraw them daily. Just keep in mind there is a 10% fee each time you do.
+
+Step 2: Purchase BNB on Binance.US or Crypto.com. This process may take up to 5 business days for funds to clear before you can transfer it. You can use any crypto exchange site you like to purchase your BNB. 
+
+Step 3: Create an account on MetaMask. https://metamask.io/ 
+
+Once complete go to Settings > Network > Add a New RPC Network > Then enter the Binance Smart Chain info. You can find this info on this link https://crypto-explained.com/services/how-to-add-binance-smart-chain-to-metamask/ 
+
+However, I have it here to speed up the process.
+Network Name: Binance Smart Chain
+RPC Url: https://back-dataseed.binance.org/
+Chain ID: 56
+Symbol: BNB
+Block Explorer URL: https://bscsan.com
+
+
+Step 4: Connect your Binance.US account to your MetaMask account so you can transfer your BNB to your MetaMask Wallet. https://crypto-explained.com/services/how-to-add-binance-smart-chain-to-metamask/ 
+
+To do this copy/tap the link right above the (Receive, Send, Swap buttons) on MetaMask, then go to Binance.US and select “Withdraw”. You can actually just click “Max” so u can transfer all of your funds. After you click “Preview & Understood”, select the middle option “BSC” (BEP20 BSC Address). Paste your MetaMask link you copied there. At this point your funds will be sent to your MetaMask Wallet, or you will get a message stating your funds are on Hold. (This is the part that can take up to 5 days) 
+
+
+Step 5: Go to Drip Network. https://drip.community/ Go to “Connect Wallet” to transfer your BNB from MetaMask to Drip Network. Once connected go to “Swap” to buy Drip Tokens. DO NOT use all of your BNB, save some in your account. I would suggest leaving about $10 or more in BNB to cover your transaction fees. You can use the link below to use the converter calculator to determine the amount of Drip Tokens you want to buy. Choose BNB. https://crypto.com/price/binance-coin The portion you leave will be available in your MetaMask Wallet.
+
+
+Step 6: Go to “Faucet” on Drip Network to add your Drip. You will need to enter the Buddy Referral link in order to complete this step. You can use my referral link to join drip.community/faucet?buddy=0xF6516231A522175955f7a47223d9Fc7CEB2A4820 A window from MetaMask will pop up to ask you to accept the transaction fee. Once complete now you can purchase Drip. You can set your Slippage Fee from 1%-3%. I put mine at 1% and it was accepted after the 2nd attempt.
+
+Congratulations! You have now completed the process & are earning 1% interest daily on your investment. There are additional earning opportunities if you are interested. Check out the white paper here. Also, please do your own research on Drip Network if this is interesting to you. 
+
+This is a video explaining more.https://youtu.be/TOJg308iREw
