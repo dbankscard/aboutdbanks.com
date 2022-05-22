@@ -6,7 +6,7 @@
 name: About D.Banks
 
 # Short bio or description (displayed in the header)
-description: Administrator of things
+description: Builder of things
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: images/aboutdbanks.png
@@ -20,7 +20,7 @@ footer-links:
   flickr:
   github: dbankscard/aboutdbanks
   instagram: anotherdbanksproduction
-  linkedin: https://www.linkedin.com/in/dwightbanks/
+  linkedin: dwightbanks
   pinterest:
   rss: # just type anything here for a working RSS icon
   twitter: 
