@@ -6,7 +6,7 @@
 name: About D.Banks
 
 # Short bio or description (displayed in the header)
-description: Builder of things
+description: Creator of things...
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: images/aboutdbanks.png
@@ -73,7 +73,7 @@ sass:
 gems:
   - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
   - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
-
+  - minimal-mistakes-jekyll
 # Exclude these files from your production _site
 exclude:
   - Gemfile
