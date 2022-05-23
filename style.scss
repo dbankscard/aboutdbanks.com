@@ -18,7 +18,7 @@ html {
 }
 
 body {
-	background: $white;
+	background: $black;
   font: 18px/1.4 $helvetica;
   color: $darkGray;
 }
@@ -283,9 +283,6 @@ footer {
   text-align: center;
 }
 
-header {
-  background-image: url('{{ site.baseurl }}/images/background.jpg');
-}
 
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
