@@ -260,6 +260,12 @@ h2 {
     text-decoration: underline;
 }
 
+.project-link-disabled {
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-style: italic;
+}
+
 /* Contact Section */
 .contact {
     text-align: center;
