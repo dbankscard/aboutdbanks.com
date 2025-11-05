@@ -636,6 +636,7 @@ h2::after {
     display: flex;
     gap: 1rem;
     margin-top: 1.5rem;
+    justify-content: center;
 }
 
 .music-link {
