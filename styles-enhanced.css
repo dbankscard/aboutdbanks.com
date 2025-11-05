@@ -598,6 +598,7 @@ h2::after {
     box-shadow: var(--shadow-md);
     transition: var(--transition);
     animation: scaleIn 0.8s ease-out;
+    text-align: center;
 }
 
 .music-card:hover {
