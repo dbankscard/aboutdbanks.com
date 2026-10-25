@@ -140,7 +140,6 @@ a:hover { text-decoration-color: var(--horizon); }
   display: block; width: 100%; height: auto;
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(239, 230, 216, 0.18), 0 30px 80px -20px rgba(0, 0, 0, 0.7);
-  filter: grayscale(1);
 }
 
 /* ---------- Ledger body ---------- */
