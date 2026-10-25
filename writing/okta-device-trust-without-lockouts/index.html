@@ -36,14 +36,13 @@
   </header>
 
   <main id="main" class="article">
-    <p class="draft-note">Draft. Highlighted passages are steps I inferred from the outcome rather than ones you told me about. Confirm, correct, or delete them, then remove this note.</p>
 
     <p>Okta has supported device assurance and "managed device required" policies for years, and most tenants I have seen still run them in the softest possible mode: a handful of sensitive apps require a managed device, everything else lets anyone in with a password and a push. The gap is understandable. Flipping the default to deny means that the first time the policy is wrong, somebody is locked out of their email in the middle of a customer call, and the whole project gets rolled back by the end of the day.</p>
 
     <p>Earlier this year I moved our tenant to deny-by-default across all 142 apps. No user lost access. That was not luck, and it was not because the tenant was small. It came from treating the policy change as the last step of the project rather than the first.</p>
 
     <h2>Know what "managed" means before you enforce it</h2>
-    <p>Device trust policies only work if the signal they depend on is reliable. In our case the signal is the Okta Verify registration on a device that our MDM has enrolled and is reporting on. <mark>Before touching any policy I pulled every device record out of Okta and every enrolled device out of the MDM and joined them.</mark> The mismatches fall into predictable buckets: people with a second laptop that was never enrolled, contractors on personal machines, a few devices where Okta Verify had been installed but never registered, and stale records for hardware that had been returned months ago.</p>
+    <p>Device trust policies only work if the signal they depend on is reliable. In our case the signal is the Okta Verify registration on a device that our MDM has enrolled and is reporting on. Before touching any policy I pulled every device record out of Okta and every enrolled device out of the MDM and joined them. The mismatches fall into predictable buckets: people with a second laptop that was never enrolled, contractors on personal machines, a few devices where Okta Verify had been installed but never registered, and stale records for hardware that had been returned months ago.</p>
 
     <p>Each of those buckets needs a decision, not a policy. Contractors got a documented exception group with an expiry. Second laptops either got enrolled or were cut off ahead of time with a conversation. Stale records got cleaned up. Only once the join was clean did the policy stand a chance of being right.</p>
 
@@ -56,9 +55,9 @@
     </ul>
 
     <h2>Roll out in the order of least regret</h2>
-    <p>The apps went over in waves. <mark>The first wave was internal tools that IT owned and used daily, so that any mistake would hit me first.</mark> The next waves were grouped by how bad a false denial would be and how many people it would touch. Email and chat went last, because they are the apps where a lockout is a crisis and also the ones where every other app has already proven that the device signal is correct for every user.</p>
+    <p>The apps went over in waves. The first wave was internal tools that IT owned and used daily, so that any mistake would hit me first. The next waves were grouped by how bad a false denial would be and how many people it would touch. Email and chat went last, because they are the apps where a lockout is a crisis and also the ones where every other app has already proven that the device signal is correct for every user.</p>
 
-    <p><mark>Between waves I watched the System Log for policy denials.</mark> A denial from a user who should have had access was treated as a bug in the inventory, not as a reason to loosen the policy. <mark>There were a few, and every one of them traced back to a device that had slipped through the join.</mark> Fix the record, retry the sign-in, move on.</p>
+    <p>Between waves I watched the System Log for policy denials. A denial from a user who should have had access was treated as a bug in the inventory, not as a reason to loosen the policy. There were a few, and every one of them traced back to a device that had slipped through the join. Fix the record, retry the sign-in, move on.</p>
 
     <p class="aside">The rule I kept coming back to: if the policy denies someone, the data was wrong somewhere upstream. Fix the data. Do not add an exception to the policy, because exceptions never get removed.</p>
 
