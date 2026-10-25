@@ -82,32 +82,32 @@
           <li>
             <h3>Self-service deployment platform</h3>
             <p>Takes any GitHub repo to a running EKS or Lambda environment through reviewed Terraform and Helm pull requests. Okta SSO, a GitHub App, a security-review gate, and 1Password secrets synced into AWS Secrets Manager. Live in five days, then extended across four GitHub organizations.</p>
-            <p class="tech">Terraform Cloud, Helm, EKS, Lambda, GitHub Apps, 1Password, Okta</p>
+            <p class="tech"><span>Terraform Cloud, Helm, EKS, Lambda, GitHub Apps, 1Password, Okta</span><span class="where">XBOW</span></p>
           </li>
           <li>
             <h3>Identity as code</h3>
             <p>An entire Okta tenant imported into Terraform at zero diff: groups, rules, SAML and OIDC apps, authenticators. Event hooks drive Lambda pipelines for onboarding, offboarding, and a daily dormant-account sweep. Device trust moved to deny-by-default across 142 apps without a single user losing access. Standing super-admin replaced by just-in-time elevation with automatic revocation and a full audit trail.</p>
-            <p class="tech">Okta, Terraform, AWS Lambda, EventBridge, Slack</p>
+            <p class="tech"><span>Okta, Terraform, AWS Lambda, EventBridge, Slack</span><span class="where">XBOW</span></p>
           </li>
           <li>
             <h3>Okta MCP server</h3>
             <p>A self-hosted Model Context Protocol server that lets IT query and change Okta from Claude. Access is gated by Tailscale identity and Okta groups, every tool is scope-limited, and every call is logged. The same server gives an AI helpdesk agent read-only identity context when it drafts ticket replies.</p>
-            <p class="tech">TypeScript, MCP, Tailscale, Claude, Front</p>
+            <p class="tech"><span>TypeScript, MCP, Tailscale, Claude, Front</span><span class="where">XBOW</span></p>
           </li>
           <li>
             <h3>AI-assisted support operations</h3>
             <p>At Global Healing, a support system across Zendesk, Slack, and AWS Bedrock that auto-grades more than 26,000 tickets a month at 95% consistency. Ticket resolution cost fell by a third and new-agent onboarding time was cut in half.</p>
-            <p class="tech">AWS Bedrock, Python, Zendesk API, Slack</p>
+            <p class="tech"><span>AWS Bedrock, Python, Zendesk API, Slack</span><span class="where">Global Healing</span></p>
           </li>
           <li>
             <h3>Inventory and data pipelines</h3>
             <p>Event-driven ETL on Lambda feeding a Redshift warehouse that joins Amazon, eBay, and Shopify data, with QuickSight dashboards used for daily operating decisions. A ten-hour-a-week manual inventory process became a pipeline that runs in seconds at 99.9% uptime.</p>
-            <p class="tech">AWS Lambda, Redshift, QuickSight, Terraform, Python</p>
+            <p class="tech"><span>AWS Lambda, Redshift, QuickSight, Terraform, Python</span><span class="where">Global Healing</span></p>
           </li>
           <li>
             <h3>Mac fleet and network, rebuilt in the cloud</h3>
             <p>Migrated on-premises Jamf Pro to a clustered AWS environment defined in Terraform and extended the corporate network into AWS with Meraki AutoVPN. Jamf Connect for identity-first login, Jamf Trust and Private Access for Zero Trust, CIS-aligned baselines across 300+ endpoints.</p>
-            <p class="tech">Jamf Pro, Jamf Protect, Cisco Meraki, Cisco Umbrella, AWS VPC</p>
+            <p class="tech"><span>Jamf Pro, Jamf Protect, Cisco Meraki, Cisco Umbrella, AWS VPC</span><span class="where">Global Healing</span></p>
           </li>
         </ol>
       </div>

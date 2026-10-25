@@ -59,10 +59,21 @@ a:hover { text-decoration-color: var(--horizon); }
   position: relative;
   color: var(--sand);
   background:
-    radial-gradient(120% 70% at 50% 108%, rgba(201, 138, 75, 0.55) 0%, rgba(201, 138, 75, 0.16) 32%, rgba(201, 138, 75, 0) 58%),
-    linear-gradient(180deg, var(--night) 0%, #1a1a33 42%, var(--dusk) 70%, #4a3550 88%, #6b4a46 100%);
+    radial-gradient(110% 60% at 50% 106%, rgba(214, 150, 92, 0.62) 0%, rgba(214, 150, 92, 0.22) 30%, rgba(214, 150, 92, 0) 60%),
+    linear-gradient(180deg, var(--night) 0%, #181a33 40%, var(--dusk) 68%, #44314f 86%, #5d3f4b 100%);
   padding: 0 var(--gutter) clamp(56px, 9vw, 120px);
   overflow: hidden;
+  isolation: isolate;
+}
+.hero::before {
+  /* fine grain so the sky reads as atmosphere, not a flat CSS gradient */
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 .hero::after {
   /* thin horizon line where the body "sunrise" begins */
@@ -103,9 +114,9 @@ a:hover { text-decoration-color: var(--horizon); }
 }
 .role {
   margin: 0 0 1.1rem;
-  font-size: clamp(1.1rem, 1.9vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
   font-weight: 500;
-  font-variation-settings: "wdth" 90;
+  font-variation-settings: "wdth" 92;
   color: var(--sand);
 }
 .pitch {
@@ -147,9 +158,33 @@ a:hover { text-decoration-color: var(--horizon); }
   transform: scale(1.22) translateY(9%);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .hero-text > *, .portrait { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .hero-text > :nth-child(2) { animation-delay: 0.08s; }
+  .hero-text > :nth-child(3) { animation-delay: 0.16s; }
+  .hero-text > :nth-child(4) { animation-delay: 0.24s; }
+  .portrait { animation-delay: 0.12s; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
 /* ---------- Ledger body ---------- */
 
-main { max-width: 1120px; margin: 0 auto; padding: clamp(24px, 4vw, 40px) var(--gutter) 0; }
+main {
+  max-width: 1120px; margin: 0 auto;
+  padding: clamp(24px, 4vw, 40px) var(--gutter) 0;
+  position: relative;
+}
+main::before {
+  /* the last of the dusk, fading into daylight */
+  content: "";
+  position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+  width: 100vw; height: 320px; z-index: -1;
+  background: linear-gradient(180deg, rgba(214, 150, 92, 0.14) 0%, rgba(214, 150, 92, 0) 100%);
+  pointer-events: none;
+}
 
 .row {
   display: grid;
@@ -192,7 +227,8 @@ main { max-width: 1120px; margin: 0 auto; padding: clamp(24px, 4vw, 40px) var(--
   letter-spacing: -0.005em;
 }
 .work-list p { margin: 0 0 0.6rem; }
-.tech { font-size: 0.9rem; color: var(--haze); margin: 0 !important; }
+.tech { font-size: 0.9rem; color: var(--haze); margin: 0 !important; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.tech .where { margin-left: auto; color: var(--ink); font-weight: 500; }
 
 /* Open source */
 .repo-list { list-style: none; margin: 0; padding: 0; }
@@ -215,10 +251,10 @@ main { max-width: 1120px; margin: 0 auto; padding: clamp(24px, 4vw, 40px) var(--
 .timeline dd span { display: block; color: var(--haze); font-size: 0.95rem; margin-top: 0.2rem; }
 
 /* Skills */
-.skills { margin: 0; }
-.skills dt { font-weight: 600; margin-top: 1rem; }
-.skills dt:first-child { margin-top: 0; }
-.skills dd { margin: 0.15rem 0 0; color: var(--haze); }
+.skills { margin: 0; display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0 20px; }
+.skills dt { font-weight: 600; padding: 0.8rem 0; border-top: 1px solid var(--day-rule); }
+.skills dd { margin: 0; padding: 0.8rem 0; border-top: 1px solid var(--day-rule); color: var(--haze); }
+.skills dt:first-of-type, .skills dd:first-of-type { border-top: 0; padding-top: 0.2rem; }
 
 /* ---------- Footer ---------- */
 
@@ -249,7 +285,9 @@ main { max-width: 1120px; margin: 0 auto; padding: clamp(24px, 4vw, 40px) var(--
 @media (max-width: 600px) {
   .nav ul li:not(:last-child) { display: none; }
   .hero h1 { font-size: clamp(3.6rem, 19vw, 5.5rem); }
-  .timeline { grid-template-columns: 1fr; }
+  .timeline, .skills { grid-template-columns: 1fr; }
+  .skills dt { padding-bottom: 0; }
+  .skills dd { border-top: 0; padding-top: 0.25rem; }
   .timeline dt { padding-bottom: 0; border-top: 1px solid var(--day-rule); }
   .timeline dd { border-top: 0; padding-top: 0.25rem; }
   .timeline dt:first-of-type { padding-top: 0.2rem; }
