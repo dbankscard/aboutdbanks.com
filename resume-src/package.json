@@ -1,0 +1,9 @@
+{
+  "name": "resume-src",
+  "private": true,
+  "description": "Generates the resume .docx, web page and PDF from resume-data.js",
+  "scripts": {
+    "build": "node make-docx.js && node make-resume-html.js && cp resume.html ../resume/index.html && cp Dwight_Banks_Resume.docx .. && \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf=\"$PWD/../Dwight_Banks_Resume.pdf\" \"file://$PWD/resume.html\""
+  },
+  "dependencies": { "docx": "9.5.1" }
+}

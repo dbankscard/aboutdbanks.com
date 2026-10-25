@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dwight Banks – Resume</title>
+<meta name="description" content="Resume of Dwight Banks, Senior Systems & Platform Engineer in Houston, TX.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+  :root { --ink:#1a1a1a; --muted:#5c5c5c; --rule:#c9c9c9; --link:#1f4e79; }
+  * { box-sizing: border-box; }
+  html { font-size: 10.5pt; }
+  body { margin:0; font-family: Calibri, "Helvetica Neue", Arial, sans-serif; color:var(--ink); background:#ececec; line-height:1.32; }
+  .page { max-width: 8.5in; margin: 24px auto; background:#fff; padding: 0.55in 0.6in; box-shadow: 0 2px 16px rgba(0,0,0,.12); }
+  a { color: var(--link); text-decoration: none; }
+  a:hover, a:focus { text-decoration: underline; }
+  header h1 { font-size: 22pt; margin:0; letter-spacing: -0.01em; }
+  header .title { font-size: 12pt; color: var(--muted); margin: 2px 0 4px; }
+  header .contact { font-size: 9.5pt; color: var(--muted); margin: 0 0 2px; }
+  header .contact span + span::before { content: "·"; margin: 0 .55em; }
+  header { border-bottom: 1.5px solid var(--ink); padding-bottom: 7px; margin-bottom: 8px; }
+  h2 { font-size: 10pt; letter-spacing: .08em; text-transform: uppercase; margin: 14px 0 5px; padding-bottom: 2px; border-bottom: 1px solid var(--rule); }
+  p { margin: 0 0 5px; }
+  ul { margin: 0 0 4px; padding-left: 1.05em; }
+  li { margin: 0 0 3px; }
+  .job { display:flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 8px 0 3px; }
+  .job b { font-size: 10.5pt; }
+  .job .dates { color: var(--muted); white-space: nowrap; font-size: 9.5pt; }
+  .skills p b, .edu p b { font-weight: 600; }
+  .bar { display:flex; justify-content:space-between; align-items:center; max-width: 8.5in; margin: 20px auto 0; padding: 0 4px; font-family: system-ui, sans-serif; font-size: 14px; }
+  .bar a { background:#1a1a1a; color:#fff; padding: 8px 14px; border-radius: 6px; }
+  @media print {
+    html { font-size: 10pt; }
+    body { background:#fff; }
+    .page { max-width:none; margin:0; padding:0; box-shadow:none; }
+    .bar { display:none; }
+    @page { size: letter; margin: 0.5in 0.55in; }
+    a { color: inherit; }
+    h2, .job { break-after: avoid; }
+    li { break-inside: avoid; }
+  }
+  @media (max-width: 640px) { .page { padding: 20px 16px; margin: 0; } .job { flex-direction: column; gap: 0; } }
+</style>
+</head>
+<body>
+<div class="bar"><a href="/">← aboutdbanks.com</a><a href="../Dwight_Banks_Resume.pdf" download>Download PDF</a></div>
+<main class="page">
+<header>
+  <h1>Dwight Banks</h1>
+  <p class="title">Senior Systems &amp; Platform Engineer</p>
+  <p class="contact"><span>Houston, TX · Remote</span><span>601-954-6201</span><span><a href="mailto:dwight.banks@icloud.com">dwight.banks@icloud.com</a></span></p>
+  <p class="contact"><span><a href="https://aboutdbanks.com">aboutdbanks.com</a></span><span><a href="https://github.com/dbankscard">github.com/dbankscard</a></span><span><a href="https://linkedin.com/in/dwightbanks">linkedin.com/in/dwightbanks</a></span></p>
+</header>
+
+<h2>Summary</h2>
+<p>Senior systems engineer with 10 years running corporate IT as production infrastructure: identity, endpoints, cloud and the automation that ties them together, all in code and reviewed in pull requests. Deep in Okta, Terraform, AWS, macOS and Python/TypeScript, with ownership from architecture to on-call. Recently building AI agent tooling on top of corporate identity, including self-hosted MCP servers and an LLM-assisted helpdesk. Known for cutting toil with automation that stays reliable after it ships.</p>
+<ul><li>Took a self-service EKS/Lambda deployment platform live in five days, then scaled it across four GitHub orgs.</li><li>Moved an Okta tenant to deny-by-default device trust across 142 apps with zero users losing access.</li><li>Removed standing super-admin access with just-in-time elevation, auto-revocation and a full audit trail.</li><li>Cut 10+ hours of weekly IT toil at a 120-person company through lifecycle and workflow automation.</li><li>Author of open-source MCP servers for Jamf Pro, Cisco Meraki and SkuVault used by other IT teams.</li></ul>
+
+<h2>Experience</h2>
+
+<div class="job"><span><b>Senior IT Systems Engineer</b> &nbsp;|&nbsp; XBOW</span><span class="dates">Mar 2026 – Present</span></div>
+<ul><li>Built a self-service deployment platform that takes a GitHub repo to a running EKS or Lambda environment through reviewed Terraform and Helm pull requests, with Okta SSO, a GitHub App, a security-review gate and 1Password-to-AWS Secrets Manager sync. Live in five days, then extended across four GitHub orgs.</li><li>Automated the identity lifecycle end to end on Okta: event hooks drive AWS Lambda pipelines for onboarding, offboarding (GitHub org removal as auditable Terraform PRs, mailbox handover tickets, Slack alerts) and a daily dormant-account scan across ~300 accounts.</li><li>Eliminated standing Okta Super Admin with just-in-time elevation via a Slack command, EventBridge auto-revocation and a full audit trail.</li><li>Moved Okta to deny-by-default device trust, migrating 142 apps to a policy that blocks unmanaged devices with no user losing access, and imported groups, rules, SAML/OIDC apps and authenticators into Terraform at zero diff.</li><li>Built and operate a self-hosted Okta MCP server that lets IT query and change Okta from Claude, gated by Tailscale identity and Okta groups, scope-limited and audit-logged. Extended it to give an AI helpdesk agent read-only Okta context when drafting Front ticket responses.</li><li>Run all IT automation as code on Terraform Cloud and AWS (Lambda, EventBridge, API Gateway, Secrets Manager, KMS, IAM) with GitHub Actions OIDC deploys: 165+ merged PRs across 14 repos.</li></ul>
+<div class="job"><span><b>Senior IT Systems Engineer</b> &nbsp;|&nbsp; Global Healing</span><span class="dates">Aug 2021 – Feb 2026</span></div>
+<ul><li>Owned IT for a 120-person e-commerce company: 300+ macOS and Windows endpoints, 20+ SaaS applications, identity, network and AWS, as the sole senior engineer.</li><li>Designed and operated AWS automation and ETL pipelines on Lambda, S3, RDS (SQL Server), Redshift, EventBridge and CloudWatch with structured logging, retries, alerting and audit trails. Replaced a 10-hour-per-week manual inventory process with an event-driven pipeline running in seconds at 99.9% uptime.</li><li>Built a multi-source data warehouse on Redshift integrating Amazon, eBay and Shopify APIs, with QuickSight dashboards used for daily operating decisions.</li><li>Deployed an AI-assisted support system across Zendesk, Slack and AWS Bedrock that auto-grades 26K+ tickets a month at 95% consistency, cutting ticket resolution cost by 33% and agent onboarding time by 50%.</li><li>Automated the identity lifecycle across OneLogin, Google Workspace, Active Directory, Jamf Pro and Slack (HRIS → identity → access → notifications), enforcing least privilege and removing access drift. Saved 10+ hours of IT toil per week.</li><li>Administered and secured the Mac fleet with Jamf Pro: OS updates, app deployment, patching and CIS-aligned baselines. Implemented Jamf Connect with Google Workspace and OneLogin for identity-first login, and Jamf Trust and Private Access for Zero Trust network access.</li><li>Operated Jamf Protect with Security for detection, investigation and remediation. Senior escalation point for macOS, Windows, SaaS, identity and network issues, with a root-cause-first approach.</li><li>Maintained authoritative inventories of endpoints, access and IT-owned systems. Authored SOPs and documentation that kept systems audit-ready.</li></ul>
+<div class="job"><span><b>Infrastructure Engineer / System Administrator</b> &nbsp;|&nbsp; Global Healing</span><span class="dates">Aug 2018 – Aug 2021</span></div>
+<ul><li>Led the migration of on-premises Jamf Pro to a clustered AWS environment, defined in Terraform, and extended the corporate network into an AWS VPC with Cisco Meraki AutoVPN.</li><li>Designed, deployed and operated Cisco Meraki network infrastructure with Cisco Umbrella for DNS-layer security, and Cisco Email Security Appliance integrated with Google Workspace for phishing and malware protection.</li><li>Automated Jamf Pro builds and configuration changes with Git2JSS, GitHub Actions and Jenkins CI/CD pipelines.</li><li>Administered Active Directory Domain Services in AWS supporting user lifecycle and legacy workloads, and managed macOS, Windows and Linux environments for business and operations teams.</li></ul>
+<div class="job"><span><b>Support Specialist</b> &nbsp;|&nbsp; Global Healing</span><span class="dates">Dec 2016 – Aug 2018</span></div>
+<ul><li>Delivered enterprise macOS support and ran backup and recovery with Code42.</li><li>Automated device administration with shell scripts and reduced downtime through proactive maintenance.</li></ul>
+
+<h2>Open source</h2>
+<ul><li><a href="https://github.com/dbankscard/jamf-mcp-server">jamf-mcp-server</a> (TypeScript · 39 stars · 20 forks): MCP server that lets Claude and ChatGPT manage Jamf Pro: search devices, deploy policies, run scripts, manage profiles and produce compliance reports.</li><li><a href="https://github.com/dbankscard/cisco-meraki-mcp">cisco-meraki-mcp</a> (TypeScript): 55+ Meraki Dashboard API tools for AI assistants, with rate limiting, 80–95% token reduction and configurable auto-approval.</li><li><a href="https://github.com/dbankscard/skuvault-mcp-server">skuvault-mcp-server</a> (Python): MCP server for SkuVault inventory management with caching, rate limiting and safety confirmations for write operations.</li><li><a href="https://github.com/dbankscard/claude-swarm">claude-swarm</a> (Python): Orchestrates multiple Claude Code agents with fan-out, pipeline, hierarchical and competitive patterns.</li></ul>
+
+<h2>Skills</h2>
+<div class="skills"><p><b>Identity &amp; access:</b> Okta (Workflows, event hooks, device trust, Terraform provider), OneLogin, Google Workspace, Active Directory, Jamf Connect, Tailscale, SAML/OIDC, Zero Trust, JIT access</p><p><b>Cloud &amp; infrastructure:</b> AWS (Lambda, EKS, EventBridge, API Gateway, IAM, KMS, Secrets Manager, S3, RDS, Redshift, CloudWatch, Bedrock), Terraform / Terraform Cloud, Helm, Docker, GitHub Actions (OIDC), Jenkins</p><p><b>Endpoints &amp; network:</b> macOS, Windows, Linux, Jamf Pro / Protect / Trust, Mosyle, CIS baselines, Cisco Meraki, Cisco Umbrella, Code42</p><p><b>Languages &amp; tooling:</b> Python, TypeScript / Node.js, Bash, SQL, Git, Zapier, REST APIs</p><p><b>AI tooling:</b> Model Context Protocol (MCP) servers, LLM agents, Claude API, AWS Bedrock, LLM-assisted helpdesk automation</p></div>
+
+<h2>Certifications &amp; education</h2>
+<div class="edu">
+<p><b>Certifications:</b> Jamf Certified Expert, Jamf Certified Admin, Jamf Certified Tech, Cisco Meraki Network Operator (CMNO), Lean Six Sigma Yellow Belt</p>
+<p><b>Education:</b> B.S. Computer Science, Jackson State University, 2014</p>
+</div>
+</main>
+</body>
+</html>
