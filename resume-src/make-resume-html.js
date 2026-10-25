@@ -54,7 +54,7 @@ const html = `<!DOCTYPE html>
 <header>
   <h1>${esc(R.name)}</h1>
   <p class="title">${esc(R.title)}</p>
-  <p class="contact"><span>${esc(R.location)}</span><span>${esc(R.phone)}</span><span><a href="mailto:${R.email}">${R.email}</a></span></p>
+  <p class="contact"><span>${esc(R.location)}</span><span><a href="mailto:${R.email}">${R.email}</a></span></p>
   <p class="contact"><span><a href="https://${R.site}">${R.site}</a></span><span><a href="https://${R.github}">${R.github}</a></span><span><a href="https://${R.linkedin}">${R.linkedin}</a></span></p>
 </header>
 
