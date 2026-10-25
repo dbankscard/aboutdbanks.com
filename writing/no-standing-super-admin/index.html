@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nobody is Okta Super Admin anymore – Dwight Banks</title>
+  <meta name="description" content="Replacing standing Okta Super Admin with just-in-time elevation from Slack, automatic revocation on EventBridge, and an audit trail that answers the question before it is asked.">
+  <link rel="canonical" href="https://aboutdbanks.com/writing/no-standing-super-admin/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Nobody is Okta Super Admin anymore">
+  <meta property="og:description" content="Just-in-time elevation from a Slack command, EventBridge auto-revocation, and a full audit trail. How we removed standing super-admin access.">
+  <meta name="theme-color" content="#121826">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..800;1,62..125,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="article-top">
+    <nav class="nav" aria-label="Main">
+      <a href="../../" class="brand">About D.Banks</a>
+      <ul>
+        <li><a href="../../#writing">Writing</a></li>
+        <li><a href="../../#work">Work</a></li>
+        <li><a href="../../resume/" class="nav-resume">Resume</a></li>
+      </ul>
+    </nav>
+    <div class="article-head">
+      <h1>Nobody is Okta Super Admin anymore</h1>
+      <p class="standfirst">Standing super-admin access is the account every attacker wants and the one every auditor asks about. We replaced it with a Slack command, a Lambda, and a timer.</p>
+      <p class="byline">Dwight Banks, October 2026. About a five minute read.</p>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <p class="draft-note">Draft. Highlighted passages are steps I inferred from the outcome rather than ones you told me about. Confirm, correct, or delete them, then remove this note.</p>
+
+    <p>Every Okta tenant starts with at least one Super Admin, and most of them end up with several: the person who set it up, the person who replaced them, the security engineer who needed it once for an incident, the break-glass account that everyone knows the password to. Each of those is a full-control credential sitting idle for most of the year. If one is phished, the attacker owns identity for the whole company, which means they own everything behind it.</p>
+
+    <p>The fix is well understood in cloud infrastructure: nobody holds admin, people request it when they need it, it expires on its own, and every grant is logged. I built that for Okta. Here is the shape of it.</p>
+
+    <h2>The request is a Slack command</h2>
+    <p>An engineer who needs to do admin work runs a slash command in Slack with a short reason. <mark>The command posts to a Lambda behind API Gateway, which verifies the Slack signature, confirms the requester is in the Okta group that is allowed to elevate, and then adds them to a group that carries the Super Admin role.</mark> <mark>The whole thing takes about a second.</mark> The requester gets a reply saying how long they have.</p>
+
+    <p>Putting the request in Slack rather than in a form or a ticket was deliberate. It is where the engineer already is, it is already authenticated through Okta, and every request is visible in a channel that the rest of the team can see. Visibility is a control. Nobody elevates quietly.</p>
+
+    <h2>Revocation is a timer, not a reminder</h2>
+    <p>The part that makes just-in-time real is that the grant ends without anyone remembering to end it. When the Lambda grants access, it also schedules an EventBridge rule for the expiry time. When that fires, a second Lambda removes the user from the admin group and posts to the same Slack thread that the elevation has ended. <mark>If the grant is revoked early by hand, the scheduled rule is cleaned up so it does not fire against a user who is already out.</mark></p>
+
+    <p>There is no "extend" button. If someone needs more time they request again, which produces another log entry with another reason. The friction is small and it is the point.</p>
+
+    <h2>The audit trail answers the question before it is asked</h2>
+    <p>Every elevation produces three records: the Slack message with the reason, the Okta System Log entry for the group membership change, and the Lambda's own structured log line with requester, reason, grant time, and expiry. <mark>Those are correlated by a single request ID so that any one of them leads to the other two.</mark></p>
+
+    <p>When an auditor asks who had Super Admin during a given week and why, the answer is a query, not a meeting. When the security team sees an admin action in the System Log they can find the Slack thread that explains it in under a minute. And when nobody has elevated for a while, that absence is itself evidence that the role is not being used casually.</p>
+
+    <p class="aside">The part people underestimate: the audit trail is not for the auditor. It is for the engineer who elevated at 11pm during an incident and wants to be able to show, six months later, exactly what they did and why.</p>
+
+    <h2>What it took to get there</h2>
+    <p>The automation was the easy part. The harder part was removing the standing grants, because each one belonged to someone with a reason. <mark>The approach that worked was to turn the just-in-time path on first, ask people to use it for a few weeks, and only then remove their standing role.</mark> By that point they had already proven to themselves that the new path was faster than remembering which account to log into.</p>
+
+    <p><mark>The break-glass account still exists. It is the one exception, and it is treated like one: the credential is in a vault with access alerting, it has its own device-trust policy, and its use pages the whole team. It has not been used since the project shipped.</mark></p>
+
+    <h2>Why this matters beyond Okta</h2>
+    <p>The same pattern applies to any high-privilege role in any system: AWS account admin, GitHub org owner, the MDM's super user. Once the Okta version existed, the pieces were reusable. The request path, the timer, and the log format are the same. Only the grant and revoke calls change.</p>
+
+    <p>If you take one thing from this: the goal is not to make admin access hard. It is to make it short, visible, and self-cleaning. Engineers will use a path that is fast. They will route around a path that is slow, and that is how standing admin comes back.</p>
+  </main>
+
+  <footer class="article-foot">
+    <p>Dwight Banks runs corporate IT as production infrastructure. <a href="../../">More about me</a>, or <a href="mailto:dwight.banks@icloud.com">email me</a> if you are working on something similar.</p>
+  </footer>
+</body>
+</html>

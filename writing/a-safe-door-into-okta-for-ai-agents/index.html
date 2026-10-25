@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A safe door into Okta for AI agents – Dwight Banks</title>
+  <meta name="description" content="Design notes on a self-hosted MCP server that lets IT work with Okta from Claude: who gets in, what each tool is allowed to touch, and how every call is logged.">
+  <link rel="canonical" href="https://aboutdbanks.com/writing/a-safe-door-into-okta-for-ai-agents/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="A safe door into Okta for AI agents">
+  <meta property="og:description" content="Tailscale for who, Okta groups for what, scoped tools, and an audit log. How we let Claude work with identity without handing it the keys.">
+  <meta name="theme-color" content="#121826">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..800;1,62..125,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="article-top">
+    <nav class="nav" aria-label="Main">
+      <a href="../../" class="brand">About D.Banks</a>
+      <ul>
+        <li><a href="../../#writing">Writing</a></li>
+        <li><a href="../../#work">Work</a></li>
+        <li><a href="../../resume/" class="nav-resume">Resume</a></li>
+      </ul>
+    </nav>
+    <div class="article-head">
+      <h1>A safe door into Okta for AI agents</h1>
+      <p class="standfirst">An MCP server is just an API with a language model on the other end. The interesting decisions are about who can open the door, how far it opens, and who finds out.</p>
+      <p class="byline">Dwight Banks, October 2026. About a six minute read.</p>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <p class="draft-note">Draft. Highlighted passages are steps I inferred from the outcome rather than ones you told me about. Confirm, correct, or delete them, then remove this note.</p>
+
+    <p>I have built a few Model Context Protocol servers in public: for Jamf Pro, for Cisco Meraki, for SkuVault. They are useful and people use them. The one I run at work, for Okta, is the one I think about most, because the system behind it is identity itself. A tool that can read and change Okta can read and change who has access to everything. So the design question was never "can Claude call the Okta API." It was "what has to be true before I am comfortable letting it."</p>
+
+    <h2>Who: the network decides before the server does</h2>
+    <p>The server is self-hosted and only reachable over Tailscale. That sounds like a deployment detail but it is the first layer of authorization. <mark>Every request arrives with a Tailscale identity attached, which means the server knows which person's device is calling before it reads a byte of the request.</mark> There is no API key to leak, no public endpoint to scan, and a device that is not in the tailnet does not get a connection refused, it gets nothing at all.</p>
+
+    <p><mark>Because our Tailscale identities come from Okta,</mark> this also means a person who has been offboarded loses access to the MCP server in the same moment they lose access to everything else. Nobody has to remember to rotate anything.</p>
+
+    <h2>What: scopes are Okta groups, not a config file</h2>
+    <p>Inside the server, each tool declares the scope it needs: read users, read groups, modify group membership, and so on. <mark>Which scopes a caller has is decided by their Okta group membership, looked up at request time.</mark> A helpdesk engineer can look up a user's status and group memberships. A senior engineer can also add someone to a group. Nobody can create an admin or change an authentication policy through this path at all, because no tool for that exists.</p>
+
+    <p>That last point matters more than the scoping. The safest capability is the one you did not build. The server exposes the narrow set of operations that IT does dozens of times a day and would benefit from doing in plain language. The rare, dangerous operations stay in Terraform, where they get a pull request and a reviewer.</p>
+
+    <p class="aside">If a tool would make you nervous in the hands of a new hire on their first day, it should not be a tool. Scoping limits the damage of a mistake. Not building the tool removes the mistake.</p>
+
+    <h2>Who finds out: every call is a log line</h2>
+    <p>Each tool invocation writes a structured record: who called, from which device, which tool, with which arguments, what Okta returned, and how long it took. <mark>Write operations also post a short summary to a Slack channel the whole IT team reads.</mark> That gives the same visibility as the just-in-time admin flow: changes made through the agent are not quieter than changes made by hand. They are louder.</p>
+
+    <p>The log was also the thing that made the rollout easy to defend. <mark>When security asked what the agent had done in its first month, the answer was a table, not a conversation.</mark></p>
+
+    <h2>The second user: a helpdesk agent that cannot write</h2>
+    <p>Once the server existed, the obvious extension was to let an AI helpdesk agent use it. That agent drafts replies to tickets in Front. A lot of tickets are some version of "I can't get into X," and the right reply depends on facts that live in Okta: is the account active, is the device registered, are they in the right group.</p>
+
+    <p>The helpdesk agent gets its own identity with read-only scopes. It can look, it cannot touch. <mark>Its drafts go to a human before they go to the user.</mark> <mark>The result is that the first reply on an access ticket now usually contains the actual answer rather than a request for more information, and the engineer reviewing the draft can see the Okta facts that informed it.</mark></p>
+
+    <h2>What I would tell someone building one</h2>
+    <ul>
+      <li>Decide who can connect at the network layer, with an identity you already trust, before you write any authorization code.</li>
+      <li>Make scopes live in the identity provider so that access reviews cover the agent too.</li>
+      <li>Build the small set of tools people use every day. Leave the dangerous operations in a path that has review.</li>
+      <li>Log every call, and make writes visible to humans in the place they already look.</li>
+      <li>Give automated callers their own identity with less access than the humans. An agent that only reads is an agent you can let run.</li>
+    </ul>
+  </main>
+
+  <footer class="article-foot">
+    <p>Dwight Banks runs corporate IT as production infrastructure. <a href="../../">More about me</a>, or <a href="mailto:dwight.banks@icloud.com">email me</a> if you are working on something similar.</p>
+  </footer>
+</body>
+</html>

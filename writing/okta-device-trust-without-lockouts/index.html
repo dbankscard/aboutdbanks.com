@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deny-by-default device trust in Okta, with nobody locked out – Dwight Banks</title>
+  <meta name="description" content="How I moved 142 Okta apps to a policy that blocks unmanaged devices without a single user losing access, and what made the rollout boring.">
+  <link rel="canonical" href="https://aboutdbanks.com/writing/okta-device-trust-without-lockouts/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Deny-by-default device trust in Okta, with nobody locked out">
+  <meta property="og:description" content="142 apps moved to a block-unmanaged-devices policy. Zero lockouts. Here is the sequence that made it uneventful.">
+  <meta name="theme-color" content="#121826">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,300..800;1,62..125,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="article-top">
+    <nav class="nav" aria-label="Main">
+      <a href="../../" class="brand">About D.Banks</a>
+      <ul>
+        <li><a href="../../#writing">Writing</a></li>
+        <li><a href="../../#work">Work</a></li>
+        <li><a href="../../resume/" class="nav-resume">Resume</a></li>
+      </ul>
+    </nav>
+    <div class="article-head">
+      <h1>Deny-by-default device trust in Okta, with nobody locked out</h1>
+      <p class="standfirst">Moving 142 apps to a policy that blocks unmanaged devices is a one-line change in Okta and a multi-week change for the people who use it. The order of operations is what kept it uneventful.</p>
+      <p class="byline">Dwight Banks, October 2026. About a six minute read.</p>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <p class="draft-note">Draft. Highlighted passages are steps I inferred from the outcome rather than ones you told me about. Confirm, correct, or delete them, then remove this note.</p>
+
+    <p>Okta has supported device assurance and "managed device required" policies for years, and most tenants I have seen still run them in the softest possible mode: a handful of sensitive apps require a managed device, everything else lets anyone in with a password and a push. The gap is understandable. Flipping the default to deny means that the first time the policy is wrong, somebody is locked out of their email in the middle of a customer call, and the whole project gets rolled back by the end of the day.</p>
+
+    <p>Earlier this year I moved our tenant to deny-by-default across all 142 apps. No user lost access. That was not luck, and it was not because the tenant was small. It came from treating the policy change as the last step of the project rather than the first.</p>
+
+    <h2>Know what "managed" means before you enforce it</h2>
+    <p>Device trust policies only work if the signal they depend on is reliable. In our case the signal is the Okta Verify registration on a device that our MDM has enrolled and is reporting on. <mark>Before touching any policy I pulled every device record out of Okta and every enrolled device out of the MDM and joined them.</mark> The mismatches fall into predictable buckets: people with a second laptop that was never enrolled, contractors on personal machines, a few devices where Okta Verify had been installed but never registered, and stale records for hardware that had been returned months ago.</p>
+
+    <p>Each of those buckets needs a decision, not a policy. Contractors got a documented exception group with an expiry. Second laptops either got enrolled or were cut off ahead of time with a conversation. Stale records got cleaned up. Only once the join was clean did the policy stand a chance of being right.</p>
+
+    <h2>Put the policy in Terraform first</h2>
+    <p>I had already imported the tenant into Terraform: groups, group rules, SAML and OIDC apps, authenticators, and the authentication policies themselves, all at zero diff. That turned out to be the most important preparation for this project, for three reasons.</p>
+    <ul>
+      <li>The policy change became a pull request. Someone else read it before it applied, and the diff showed exactly which apps were moving.</li>
+      <li>Rollback was a revert. I did not have to remember what the old policy looked like at 2am.</li>
+      <li>Apps could be moved in batches by changing which policy they referenced, and each batch was its own commit with its own blast radius.</li>
+    </ul>
+
+    <h2>Roll out in the order of least regret</h2>
+    <p>The apps went over in waves. <mark>The first wave was internal tools that IT owned and used daily, so that any mistake would hit me first.</mark> The next waves were grouped by how bad a false denial would be and how many people it would touch. Email and chat went last, because they are the apps where a lockout is a crisis and also the ones where every other app has already proven that the device signal is correct for every user.</p>
+
+    <p><mark>Between waves I watched the System Log for policy denials.</mark> A denial from a user who should have had access was treated as a bug in the inventory, not as a reason to loosen the policy. <mark>There were a few, and every one of them traced back to a device that had slipped through the join.</mark> Fix the record, retry the sign-in, move on.</p>
+
+    <p class="aside">The rule I kept coming back to: if the policy denies someone, the data was wrong somewhere upstream. Fix the data. Do not add an exception to the policy, because exceptions never get removed.</p>
+
+    <h2>What deny-by-default changed for us</h2>
+    <p>The obvious result is that a stolen password alone no longer gets anyone into a company app from a device we do not manage. The less obvious result is that the policy now enforces the inventory. A device that is not enrolled is not a device that can reach anything, so enrollment is no longer something IT has to chase. People show up with the laptop and get it enrolled because that is the only way their day starts.</p>
+
+    <p>It also made the next projects easier. Just-in-time admin elevation, which I will write about separately, assumes that an admin session is coming from a managed device. The dormant-account sweep assumes that an account with no managed device registered is probably not in use. Both of those depend on the device signal being trustworthy, and it is trustworthy because the policy forces it to be.</p>
+
+    <h2>If you are about to do this</h2>
+    <ol>
+      <li>Join your identity provider's device records against your MDM's and resolve every mismatch before you write a policy.</li>
+      <li>Get the policies into code so the change is reviewable and the rollback is a revert.</li>
+      <li>Move apps in waves, starting with the ones where a mistake hurts only you.</li>
+      <li>Treat every unexpected denial as a data bug, not a policy bug.</li>
+      <li>Put email and chat last. By then the signal has proven itself on everything else.</li>
+    </ol>
+  </main>
+
+  <footer class="article-foot">
+    <p>Dwight Banks runs corporate IT as production infrastructure. <a href="../../">More about me</a>, or <a href="mailto:dwight.banks@icloud.com">email me</a> if you are working on something similar.</p>
+  </footer>
+</body>
+</html>
